@@ -29,7 +29,7 @@
       "init": {
         "title": "Steam Playtime options",
         "data": {
-          "top_n": "Number of games in top lists",
+          "top_n": "Maximum games stored for the card (1–50)",
           "scan_interval_hours": "Refresh every"
         }
       }

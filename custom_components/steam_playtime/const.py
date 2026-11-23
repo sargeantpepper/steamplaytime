@@ -6,5 +6,5 @@ CONF_STEAM_ID = "steam_id"
 CONF_TOP_N = "top_n"
 CONF_SCAN_HOURS = "scan_interval_hours"
 
-DEFAULT_TOP_N = 10
+DEFAULT_TOP_N = 50
 DEFAULT_SCAN_HOURS = 1

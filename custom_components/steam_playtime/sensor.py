@@ -48,6 +48,10 @@ def _top(data: Data) -> dict[str, Any] | None:
     return played[0] if played else None
 
 
+def _total_hours(data: Data) -> float:
+    return round(sum(g.get("playtime_forever", 0) for g in data["games"]) / 60, 1)
+
+
 def _recent_top(data: Data) -> dict[str, Any] | None:
     return data["recent"][0] if data["recent"] else None
 
@@ -73,6 +77,7 @@ SENSORS: tuple[SteamPlaytimeSensorDescription, ...] = (
                 if (g := _top(d))
                 else {}
             ),
+            "total_hours": _total_hours(d),
             "top_games": [_game(g, "playtime_forever") for g in _played(d)[:n]],
         },
         picture_fn=lambda d: _header(g["appid"]) if (g := _top(d)) else None,
@@ -85,9 +90,7 @@ SENSORS: tuple[SteamPlaytimeSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfTime.HOURS,
         suggested_display_precision=1,
         icon="mdi:timer-outline",
-        value_fn=lambda d: round(
-            sum(g.get("playtime_forever", 0) for g in d["games"]) / 60, 1
-        ),
+        value_fn=_total_hours,
     ),
     SteamPlaytimeSensorDescription(
         key="games_owned",
