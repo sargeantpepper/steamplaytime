@@ -1,0 +1,12 @@
+{
+  "domain": "steam_playtime",
+  "name": "Steam Playtime",
+  "codeowners": ["@sargeantpepper"],
+  "config_flow": true,
+  "documentation": "https://github.com/sargeantpepper/steamplaytime",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/sargeantpepper/steamplaytime/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

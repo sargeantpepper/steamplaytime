@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Steam Playtime",
+        "description": "Get an API key at https://steamcommunity.com/dev/apikey. Your profile's Game details must be set to Public.",
+        "data": {
+          "api_key": "Steam Web API key",
+          "steam_id": "Steam ID or profile URL"
+        },
+        "data_description": {
+          "steam_id": "Your 17-digit SteamID64, your profile link, or your custom URL name."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Steam rejected the API key.",
+      "not_found": "No Steam account found for that ID or URL.",
+      "private_profile": "Game details on this profile are private. Set them to Public in Steam's privacy settings.",
+      "cannot_connect": "Couldn't reach Steam. Try again shortly.",
+      "unknown": "Unexpected error. Check the Home Assistant logs."
+    },
+    "abort": {
+      "already_configured": "This Steam account is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Steam Playtime options",
+        "data": {
+          "top_n": "Number of games in top lists",
+          "scan_interval_hours": "Refresh every"
+        }
+      }
+    }
+  }
+}
