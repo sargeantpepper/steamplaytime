@@ -20,7 +20,7 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 CARD_FILENAME = "steam-playtime-card.js"
 CARD_URL = f"/{DOMAIN}/{CARD_FILENAME}"
-CARD_VERSION = "1.2.0"
+CARD_VERSION = "1.3.0"
 
 type SteamPlaytimeConfigEntry = ConfigEntry[SteamPlaytimeCoordinator]
 

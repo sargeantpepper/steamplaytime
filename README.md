@@ -43,6 +43,7 @@ In the card's editor you can choose:
 - **Sensor:** *Most played game* for lifetime hours, or *Playtime last 2 weeks* for recent play
 - **Number of games to show:** 1–50 (default 10)
 - **Show more / less button** and **Games shown when expanded** (default 25): a collapsible section that reveals more of the list
+- **Steam colours:** swap your Home Assistant theme for Steam's dark blue look (off by default)
 - **Title**, **game images**, **playtime bars**, the **Steam icon**, and your **total playtime** on the right of the header
 
 Or in YAML:
@@ -58,6 +59,7 @@ show_icon: true
 show_total: true
 show_more: true
 more_count: 25
+steam_theme: false
 ```
 
 ## Alternative: Markdown card

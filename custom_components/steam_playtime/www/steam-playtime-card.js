@@ -13,9 +13,10 @@
  * icon: mdi:steam             # optional, any Home Assistant icon
  * show_more: true             # optional, collapsible "Show more" section below the list
  * more_count: 25             # optional, games shown when expanded (up to 50)
+ * steam_theme: false          # optional, use Steam's colours instead of your Home Assistant theme
  */
 
-const CARD_VERSION = "1.2.0";
+const CARD_VERSION = "1.3.0";
 
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -37,14 +38,14 @@ class SteamPlaytimeCard extends HTMLElement {
       ids.find((id) => id.startsWith("sensor.") && Array.isArray(hass.states[id].attributes.top_games)) ||
       ids.find((id) => id.startsWith("sensor.") && Array.isArray(hass.states[id].attributes.recent_games)) ||
       "";
-    return { entity, title: "Most played", count: 10, show_images: true, show_bars: true, show_icon: true, show_total: true, icon: "mdi:steam", show_more: true, more_count: 25 };
+    return { entity, title: "Most played", count: 10, show_images: true, show_bars: true, show_icon: true, show_total: true, icon: "mdi:steam", show_more: true, more_count: 25, steam_theme: false };
   }
 
   setConfig(config) {
     if (!config || !config.entity) {
       throw new Error("Choose a Steam Playtime sensor (Most played game or Playtime last 2 weeks)");
     }
-    this._config = { count: 10, show_images: true, show_bars: true, show_icon: true, show_total: true, icon: "mdi:steam", show_more: true, more_count: 25, ...config };
+    this._config = { count: 10, show_images: true, show_bars: true, show_icon: true, show_total: true, icon: "mdi:steam", show_more: true, more_count: 25, steam_theme: false, ...config };
     this._lastState = undefined;
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this._render();
@@ -133,7 +134,7 @@ class SteamPlaytimeCard extends HTMLElement {
 
     this.shadowRoot.innerHTML = `
       <style>
-        ha-card { padding: 0 16px 12px; }
+        ha-card { display: block; padding: 0 16px 12px; }
         .header { display: flex; align-items: center; gap: 8px; padding: 16px 0 8px;
           font-size: var(--ha-card-header-font-size, 20px); color: var(--ha-card-header-color, var(--primary-text-color)); }
         .title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -167,8 +168,23 @@ class SteamPlaytimeCard extends HTMLElement {
         .bar { height: 4px; margin-top: 6px; border-radius: 2px; background: var(--secondary-background-color, rgba(127,127,127,.15)); overflow: hidden; }
         .bar > div { height: 100%; border-radius: 2px; background: var(--primary-color); }
         .msg { padding: 8px 0 4px; color: var(--secondary-text-color); }
+        ha-card.steam {
+          --primary-color: #66c0f4;
+          --primary-text-color: #ffffff;
+          --secondary-text-color: #8f98a0;
+          --divider-color: rgba(255, 255, 255, 0.08);
+          --secondary-background-color: rgba(0, 0, 0, 0.3);
+          --ha-card-header-color: #ffffff;
+          --ha-card-background: #1b2838;
+          background: linear-gradient(160deg, #2a475e 0%, #1b2838 45%, #171a21 100%);
+          color: #c7d5e0;
+          border: none;
+        }
+        ha-card.steam .name { color: #dfe3e6; }
+        ha-card.steam .bar > div { background: linear-gradient(90deg, #47bfff, #1a44c2); }
+        ha-card.steam .toggle:hover { background: rgba(102, 192, 244, 0.12); }
       </style>
-      <ha-card>
+      <ha-card class="${cfg.steam_theme ? "steam" : ""}">
         ${title || cfg.show_icon || showTotal ? `<div class="header">${cfg.show_icon ? `<ha-icon icon="${esc(cfg.icon || "mdi:steam")}"></ha-icon>` : ""}<span class="title">${esc(title)}</span>${showTotal ? `<span class="total"><span class="total-value">${fmtHours(total)}</span><span class="total-label">${recent ? "last 2 weeks" : "total"}</span></span>` : ""}</div>` : ""}
         ${body}
       </ha-card>`;
@@ -206,6 +222,7 @@ const EDITOR_SCHEMA = [
       { name: "show_icon", selector: { boolean: {} } },
       { name: "show_total", selector: { boolean: {} } },
       { name: "show_more", selector: { boolean: {} } },
+      { name: "steam_theme", selector: { boolean: {} } },
       { name: "icon", selector: { icon: {} } },
     ],
   },
@@ -221,6 +238,7 @@ const EDITOR_LABELS = {
   show_icon: "Show Steam icon",
   show_total: "Show total playtime",
   show_more: "Show more / less button",
+  steam_theme: "Steam colours",
   icon: "Icon",
 };
 
